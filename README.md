@@ -12,7 +12,7 @@ reducing many customization options. An example of how to use the library in you
 (a full example can be found at [OAuthSample](src/test/java/es/us/oauthclient/OAuthSample.java)):
 
 ```java
-API api = new API(new GithubClient()));
+API api = new API(new GithubConfig()));
 api.authorize(Arrays.asList("user", "user:follow"));
 HttpResponse resp = api.get("https://api.github.com/user");
 System.out.println(resp.parseAsString());
@@ -37,15 +37,15 @@ spotify_key=dasfdasdsfffffffff
 spotify_secret=dsfa89a87fsadg870as87fg
 ```
 
-## How to add support for new clients ##
+## How to add support for new services ##
 
 In the current version, there is support for Dailymotion, Dropbox, Facebbok, Github, Google and Spotify. However,
-support to other APIs can be added very easily. You just need to create a new class that extends `AbstractOAuth2Client`
+support to other APIs can be added very easily. You just need to create a new class that extends `AbstractOAuth2Config`
 and implement the required methods. In addition, you can use the utilities provided by that class to load keys, secret and 
-`DataStoreFactory`. Next, you can find an example of how the spotify client looks like.
+`DataStoreFactory`. Next, you can find an example of how the spotify service configuration looks like.
 
 ```java
-public class SpotifyClient extends AbstractOAuth2Client implements OAuth2Client {
+public class SpotifyConfig extends AbstractOAuth2Config implements OAuth2Config {
 
   private static final String CLIENTNAME = "spotify";
   
@@ -77,4 +77,4 @@ public class SpotifyClient extends AbstractOAuth2Client implements OAuth2Client 
 }
 ```
 
-If you add support to a new client, please create a pull request so that I can include it in the repository.
+If you add support to a new service, please create a pull request so that I can include it in the repository.
