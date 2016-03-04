@@ -51,6 +51,11 @@ public class API {
   public API(OAuth2Config client) {
     super();
     this.client = client;
+    this.requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
+        public void initialize(HttpRequest request) throws IOException {
+            request.setParser(new JsonObjectParser(JSON_FACTORY));
+          }
+        });
   }
 
   /** Authorizes the installed application to access user's protected data. */
