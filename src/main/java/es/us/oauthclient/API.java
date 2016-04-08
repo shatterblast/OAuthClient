@@ -43,25 +43,45 @@ public class API {
 
   private HttpRequestFactory requestFactory;
 
-  /**
-   * @param tokenServerUrl
-   * @param authorizationServerUrl
-   * @param scope
-   */
-  public API(OAuth2Config client) {
+  public API() {
     super();
-    this.client = client;
     this.requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
-        public void initialize(HttpRequest request) throws IOException {
-            request.setParser(new JsonObjectParser(JSON_FACTORY));
-          }
-        });
+          public void initialize(HttpRequest request) throws IOException {
+              request.setParser(new JsonObjectParser(JSON_FACTORY));
+            }
+          });
+  }
+  
+  public API(OAuth2Config client) {
+	this();
+    this.client = client;
   }
 
   /** Authorizes the installed application to access user's protected data. */
   public void authorize(List<String> scope) throws IOException {
-    // set up authorization code flow
-    AuthorizationCodeFlow flow = new MyAuthCodeFlow(new AuthorizationCodeFlow.Builder(BearerToken
+    if (client == null) {
+	   throw new RuntimeException("No authentication config provided");  
+	}
+    
+    AuthorizationCodeFlow flow = setUpAuthorizationCodeFlow(scope);
+
+    // authorize
+    LocalServerReceiver receiver = new LocalServerReceiver.Builder().setHost(
+        client.domainCallback()).setPort(client.portCallback()).build();
+
+    credential = new MyAuthCodeInstalledApp(flow, receiver).authorize("user");
+
+    requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
+      public void initialize(HttpRequest request) throws IOException {
+        credential.initialize(request);
+        request.setParser(new JsonObjectParser(JSON_FACTORY));
+      }
+    });
+  }
+
+private MyAuthCodeFlow setUpAuthorizationCodeFlow(List<String> scope)
+		throws IOException {
+	return new MyAuthCodeFlow(new AuthorizationCodeFlow.Builder(BearerToken
       .authorizationHeaderAccessMethod(),
       HTTP_TRANSPORT,
       JSON_FACTORY,
@@ -77,20 +97,7 @@ public class API {
     				}
     			}
     		));
-
-    // authorize
-    LocalServerReceiver receiver = new LocalServerReceiver.Builder().setHost(
-        client.domainCallback()).setPort(client.portCallback()).build();
-
-    credential = new MyAuthCodeInstalledApp(flow, receiver).authorize("user");
-
-    requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
-      public void initialize(HttpRequest request) throws IOException {
-        credential.initialize(request);
-        request.setParser(new JsonObjectParser(JSON_FACTORY));
-      }
-    });
-  }
+}
   
   public HttpRequestFactory getRequestFactory() {
 	  return requestFactory;
