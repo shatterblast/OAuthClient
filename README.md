@@ -1,5 +1,8 @@
 # OAuthClient #
 
+(THIS IS A MODIFIED VERSION MEANT TO CONNECT TO GOOGLE.)
+
+
 OAuthClient is a wrapper of the [Google OAuth2 API Client Library for Java](https://developers.google.com/api-client-library/java/apis/oauth2/v1) 
 to provide an easier API and a structured way of adding support to new services. 
 It also fixes a couple of issues of the original library with some services

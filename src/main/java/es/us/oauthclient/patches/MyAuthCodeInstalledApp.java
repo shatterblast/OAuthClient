@@ -20,14 +20,10 @@ import com.google.api.client.http.HttpResponse;
  */
 public class MyAuthCodeInstalledApp extends AuthorizationCodeInstalledApp {
 
-	/**
-	 * @param flow
-	 * @param receiver
-	 */
-	public MyAuthCodeInstalledApp(AuthorizationCodeFlow flow,
-			VerificationCodeReceiver receiver) {
-		super(flow, receiver);
+	public MyAuthCodeInstalledApp(AuthorizationCodeFlow flow, VerificationCodeReceiver receiver) {
+		super( flow, receiver );
 	}
+
 
 	@Override
 	public Credential authorize(String userId) throws IOException {
@@ -63,6 +59,7 @@ public class MyAuthCodeInstalledApp extends AuthorizationCodeInstalledApp {
 			getReceiver().stop();
 		}
 	}
+
 
 	private TokenResponse tryAltResponseParsing(String resp) {
 		TokenResponse tokenResponse = new TokenResponse();

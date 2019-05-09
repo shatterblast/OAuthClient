@@ -1,20 +1,33 @@
 package es.us.oauthclient;
 
-import com.google.api.client.util.store.DataStoreFactory;
 
-/**
- * @author resinas
- *
- */
-public interface OAuth2Config {
-  String getApiKey();
-  String getApiSecret();
-  String domainCallback();
-  int portCallback();
+abstract class OAuth2Config implements OAuth2ConfigInterface {
 
-  String tokenServerUrl();
-  String authorizationServerUrl();
+	private final String KEY = "GET KEY FROM    https://console.developers.google.com/apis/credentials";
+	private final String SECRET = "GET SECRET FROM    https://console.developers.google.com/apis/credentials";
 
-  DataStoreFactory store();
+
+	/** Port in the "Callback URL". */
+	private final int PORT = 8080;
+
+	/** Domain name in the "Callback URL". */
+	private final String DOMAIN = "127.0.0.1";
+
+
+	public String domainCallback() {
+		return DOMAIN;
+	}
+
+	public int portCallback() {
+		return PORT;
+	}
+
+	public String getKey() {
+		return KEY;
+	}
+	
+	public String getSecret() {
+		return SECRET;
+	}
 
 }

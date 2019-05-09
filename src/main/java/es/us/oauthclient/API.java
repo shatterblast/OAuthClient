@@ -25,25 +25,22 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import es.us.oauthclient.patches.MyAuthCodeFlow;
 import es.us.oauthclient.patches.MyAuthCodeInstalledApp;
 
-/**
- * @author resinas
- *
- */
-public class API {
+
+class API {
 
   /** Global instance of the HTTP transport. */
-  private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+  private final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
   /** Global instance of the JSON factory. */
-  static final JsonFactory JSON_FACTORY = new JacksonFactory();
+  private final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-  private OAuth2Config client;
+  private OAuth2ConfigInterface client;
 
-  Credential credential;
+  private Credential credential;
 
   private HttpRequestFactory requestFactory;
 
-  public API() {
+  API() {
     super();
     this.requestFactory = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer() {
           public void initialize(HttpRequest request) throws IOException {
@@ -52,13 +49,13 @@ public class API {
           });
   }
   
-  public API(OAuth2Config client) {
+  API(OAuth2ConfigInterface client) {
 	this();
     this.client = client;
   }
 
   /** Authorizes the installed application to access user's protected data. */
-  public void authorize(List<String> scope) throws IOException {
+  void authorize(List<String> scope) throws IOException {
     if (client == null) {
 	   throw new RuntimeException("No authentication config provided");  
 	}
@@ -79,25 +76,25 @@ public class API {
     });
   }
 
-private MyAuthCodeFlow setUpAuthorizationCodeFlow(List<String> scope)
-		throws IOException {
-	return new MyAuthCodeFlow(new AuthorizationCodeFlow.Builder(BearerToken
-      .authorizationHeaderAccessMethod(),
-      HTTP_TRANSPORT,
-      JSON_FACTORY,
-      new GenericUrl(client.tokenServerUrl()),
-      new ClientParametersAuthentication(
-        client.getApiKey(), client.getApiSecret()),
-      client.getApiKey(),
-      client.authorizationServerUrl()).setScopes(scope)
-      .setDataStoreFactory(client.store()).setRequestInitializer(
-    			new HttpRequestInitializer() {
-    				public void initialize(HttpRequest request) {
-    					request.setHeaders(new HttpHeaders().setAccept("application/json"));
-    				}
-    			}
-    		));
-}
+  private MyAuthCodeFlow setUpAuthorizationCodeFlow(List<String> scope)
+          throws IOException {
+      return new MyAuthCodeFlow(new AuthorizationCodeFlow.Builder(BearerToken
+        .authorizationHeaderAccessMethod(),
+        HTTP_TRANSPORT,
+        JSON_FACTORY,
+        new GenericUrl(client.tokenServerUrl()),
+        new ClientParametersAuthentication(
+          client.getKey(), client.getSecret()),
+        client.getKey(),
+        client.authorizationServerUrl()).setScopes(scope)
+        .setRequestInitializer(
+                  new HttpRequestInitializer() {
+                      public void initialize(HttpRequest request) {
+                          request.setHeaders(new HttpHeaders().setAccept("application/json"));
+                      }
+                  }
+              ));
+  }
   
   public HttpRequestFactory getRequestFactory() {
 	  return requestFactory;
