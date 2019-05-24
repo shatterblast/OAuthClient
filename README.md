@@ -8,7 +8,7 @@ to provide an easier API and a structured way of adding support to new services.
 It also fixes a couple of issues of the original library with some services
  (specifically Dropbox and Facebook).
 
-## How to use it ##
+# How to use it #
 
 The library has been designed to hide all of the complexities of the original library by making assumptions and
 reducing many customization options. An example of how to use the library in your code is as follows 
