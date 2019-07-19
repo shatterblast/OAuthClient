@@ -1,7 +1,12 @@
 # OAuthClient #
 
-(THIS IS A MODIFIED VERSION MEANT TO CONNECT TO GOOGLE.)
+(I WILL EVENTUALLY NEED TO USE THIS OR THE GOOGLE OAUTH2 CLIENT ITSELF WITH SPRING MVC.  @RequestMapping WORKS WITH CONTROLLERS.  THE PLAYER'S TOKEN WILL NEED TO BE LOGGED WITH THE DATABASE OF CHOICE FOR ACCOUNT CREATION, PROBABLY MONGODB, AND THEN VERIFIED WITH GOOGLE TO SOLIDIFY THE EXPERIENCE.  THERE SHOULD NOT BE A NEED FOR SPRING'S OAUTH2 CLIENT, SINCE A CONTROLLER CAN QUALIFY AS A BEAN.)
 
+ LINKS FOR REFERENCE:
+1. https://developers.google.com/identity/sign-in/android/backend-auth
+2. https://developers.google.com/identity/sign-in/web/backend-auth
+
+#
 
 OAuthClient is a wrapper of the [Google OAuth2 API Client Library for Java](https://developers.google.com/api-client-library/java/apis/oauth2/v1) 
 to provide an easier API and a structured way of adding support to new services. 
